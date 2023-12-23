@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
+    <script>
+        function redirectAlert()
+        {
+            setTimeout(() => { alert('You will be rediected to the download page shortly!'); }, 1000);
+        }
+    </script>
+</head>
+<body>
+<form action="{{ url_for('search') }}" method="POST" class="search-form">
+    <input type="text" name="query" placeholder="Video Title or URL" required>
+    <input type="submit" value="Search">
+</form>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Length</th>
+            <th>Download Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for video in videos %}
+            <tr>
+                <td><a href="{{ video.link }}" target="_blank">{{ video.title }}</a></td>
+                <td>{{ video.length }}</td>
+                <form action="{{ url_for('download') }}" method="POST">
+                    <input type="hidden" name="video_url" value="{{ video.link }}">
+                    <td>
+                        <select name="download_type">
+                            <option value="mp4">mp4</option>
+                            <option value="mp3">mp3</option>
+                        </select>
+                        <br>
+                        <button type="submit" onclick="redirectAlert()">Download</button>
+                    </td>
+                </form>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
